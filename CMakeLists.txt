@@ -110,6 +110,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU"
 	endif()
 endif()
 
+
 if(WAVM_ENABLE_RUNTIME)
 	hunter_add_package(LLVM)
 
@@ -134,11 +135,9 @@ if(WAVM_ENABLE_RUNTIME)
 	list(REMOVE_ITEM LLVM_DEFINITIONS "-D_CRT_NONSTDC_NO_WARNINGS")
 	list(REMOVE_ITEM LLVM_DEFINITIONS "-D_SCL_SECURE_NO_DEPRECATE")
 	list(REMOVE_ITEM LLVM_DEFINITIONS "-D_SCL_SECURE_NO_WARNINGS")
-
-	option(WAVM_ENABLE_UNWIND "enables printing stack traces" ON)
-else()
-	set(WAVM_ENABLE_UNWIND OFF)
 endif()
+
+option(WAVM_ENABLE_UNWIND "enables printing stack traces" OFF)
 
 # Tell MASM to create SAFESEH-compatible object files on Win32.
 if(MSVC AND CMAKE_SIZEOF_VOID_P EQUAL 4)
