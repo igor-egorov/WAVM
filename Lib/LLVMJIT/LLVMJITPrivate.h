@@ -331,13 +331,14 @@ namespace WAVM { namespace LLVMJIT {
 									   "no-frame-pointer-elim",
 									   "true");
 
-			// Set the probe-stack attribute: this will cause functions that allocate more than a
-			// page of stack space to call the wavm_probe_stack function defined in POSIX.S
-			attrs = attrs.addAttribute(function->getContext(),
-									   llvm::AttributeList::FunctionIndex,
-									   "probe-stack",
-									   "wavm_probe_stack");
-
+			if (targetMachine->getTargetTriple().getArch() != llvm::Triple::aarch64) {
+				// Set the probe-stack attribute: this will cause functions that allocate more than a
+				// page of stack space to call the wavm_probe_stack function defined in POSIX.S
+				attrs = attrs.addAttribute(function->getContext(),
+										llvm::AttributeList::FunctionIndex,
+										"probe-stack",
+										"wavm_probe_stack");
+			}
 			function->setAttributes(attrs);
 		}
 	}
